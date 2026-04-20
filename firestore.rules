@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // crowd_data: simulation writes, all authenticated users read
+    match /crowd_data/{doc} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.role == 'simulator';
+    }
+
+    // gates: only admins can toggle gate status
+    match /gates/{gateId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.role == 'admin';
+    }
+
+    // notifications: admins write, all users read
+    match /notifications/{notifId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.role == 'admin';
+    }
+
+    // users: users read/write only their own document
+    match /users/{userId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == userId;
+    }
+  }
+}

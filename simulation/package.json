@@ -1,0 +1,12 @@
+{
+  "name": "crowdsense-simulation",
+  "version": "1.0.0",
+  "description": "CrowdSense AI — 10k User Simulation Script",
+  "main": "simulate.js",
+  "type": "module",
+  "scripts": {
+    "start": "node simulate.js",
+    "scenario": "node scenarios.js"
+  },
+  "dependencies": {}
+}
